@@ -1,0 +1,13 @@
+{
+  "instrument": "EUR_USD",
+  "seed": 42,
+  "config_hash": "fbc0538e8ba73435",
+  "data_hash": "62f4cfeffe50c095",
+  "bars_base": 49548,
+  "bars_mtf": 16516,
+  "bars_htf": 1032,
+  "pools": 1703,
+  "python": "3.12.3",
+  "pandas": "3.0.2",
+  "spread_modeled": true
+}

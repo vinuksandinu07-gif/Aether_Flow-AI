@@ -1,0 +1,178 @@
+run:
+  name: phase1
+  mode: backtest
+  allow_live: false
+  seed: 42
+  reports_dir: reports
+  tz_sessions: America/New_York
+timeframes:
+  htf: 4h
+  mtf: 15m
+  ltf: 5m
+  base: 5m
+active_instruments:
+- EUR_USD
+- SPX500_USD
+instruments:
+  EUR_USD:
+    symbol: EUR_USD
+    asset_class: fx
+    pip_size: 0.0001
+    tick_size: 1.0e-05
+    price_precision: 5
+    unit_precision: 0
+    min_units: 1.0
+    max_units: 100000000.0
+    margin_rate: 0.0333
+    spread:
+      kind: fixed
+      typical: 0.0001
+      by_ny_hour: {}
+    max_spread: 0.0003
+    slippage_entry: 1.0e-05
+    slippage_stop: 5.0e-05
+    commission_per_unit_rt: 0.0
+    day_anchor_ny: '17:00'
+    entry_sessions:
+    - name: london
+      start: 02:00
+      end: 05:00
+    - name: new_york
+      start: 07:00
+      end: '10:00'
+    pool_sessions:
+    - name: asia
+      start: '19:00'
+      end: 02:00
+    - name: london
+      start: 02:00
+      end: 08:00
+    - name: new_york
+      start: 08:00
+      end: '17:00'
+    news_currencies:
+    - EUR
+    - USD
+    futures:
+      is_futures: false
+      roll_method: none
+  SPX500_USD:
+    symbol: SPX500_USD
+    asset_class: index_cfd
+    pip_size: 1.0
+    tick_size: 0.1
+    price_precision: 1
+    unit_precision: 0
+    min_units: 1.0
+    max_units: 1000000.0
+    margin_rate: 0.05
+    spread:
+      kind: fixed
+      typical: 0.6
+      by_ny_hour: {}
+    max_spread: 1.5
+    slippage_entry: 0.2
+    slippage_stop: 0.6
+    commission_per_unit_rt: 0.0
+    day_anchor_ny: '17:00'
+    entry_sessions:
+    - name: ny_open
+      start: 09:30
+      end: '11:30'
+    pool_sessions:
+    - name: overnight
+      start: '18:00'
+      end: 09:30
+    - name: cash
+      start: 09:30
+      end: '16:00'
+    news_currencies:
+    - USD
+    futures:
+      is_futures: false
+      roll_method: none
+signals:
+  atr_period: 14
+  htf_swing_n: 3
+  mtf_swing_n: 3
+  eq_tol_atr: 0.1
+  eq_max_sep_bars: 300
+  eq_lookback_swings: 8
+  min_sweep_atr: 0.05
+  reclaim_bars: 3
+  disp_mult: 0.8
+  mss_max_bars: 6
+  fvg_min_atr: 0.1
+  fvg_select: largest
+  entry_mode: edge
+  max_wait_bars: 24
+  fill_through_ticks: 1
+  opposite_signal_rule: ignore
+pools:
+  use_pdh_pdl: true
+  use_pwh_pwl: true
+  use_sessions: true
+  use_equal_mtf: true
+  use_equal_htf: true
+  daily_max_age_days: 5
+  weekly_max_age_weeks: 4
+  session_max_age_days: 2
+  eq_max_age_bars: 500
+  tp_scope: any
+bias:
+  enabled: false
+  htf_trend_filter: false
+  reference: entry
+filters:
+  session_enabled: true
+  spread_enabled: true
+  news:
+    enabled: false
+    csv_path: null
+    before_min: 15
+    after_min: 15
+    min_impact: high
+  volatility:
+    enabled: false
+    lookback_bars: 2000
+    min_percentile: 0.2
+  chop:
+    enabled: false
+    er_period: 20
+    min_er: 0.2
+  max_trades_per_day: 2
+stops:
+  stop_mode: sweep_extreme
+  stop_buffer_atr: 0.1
+  min_stop_atr: 0.5
+  max_stop_atr: 4.0
+  min_stop_action: widen
+targets:
+  tp_mode: opposing_liquidity
+  fixed_rr: 2.0
+  min_rr: 1.0
+  partial_pct: 0.5
+  partial_at: 1R
+  be_offset_r: 0.1
+  trail_activation_r: 1.0
+  trail_mode: swing
+  time_stop_bars: null
+  time_stop_r: 0.5
+data:
+  csv:
+    tz: UTC
+    timestamp_col: null
+    time_format: null
+  quality:
+    fail_on_error: true
+    spike_mult: 15.0
+    spike_window: 200
+    wide_spread_mult: 8.0
+    long_gap_hours: 3.0
+    daily_break_max_minutes: 90
+viz:
+  mtf_bars_before: 48
+  mtf_bars_after: 32
+  dpi: 110
+  include_skipped: true
+  max_charts: 10
